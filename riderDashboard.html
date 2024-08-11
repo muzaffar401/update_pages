@@ -11,14 +11,27 @@
 <body>
     <div class="container mt-5">
         <h1 class="text-center my-5 text-primary">Rider Dashboard</h1>
+        <!-- Placeholder for rider's name -->
+        <h2 id="rider-name" class="text-center text-success"></h2>
         <div id="food-donation-assignments" class="col-lg-8 offset-lg-2"></div>
-        <button id="back-button" class="btn btn-primary mb-3">Back to Login</button>
+        <a href="riderLoginForm.html" class="btn btn-danger">Back to Login</a>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Retrieve the logged-in rider's data from sessionStorage
             let currentRider = JSON.parse(sessionStorage.getItem('currentRider'));
+
+            if (currentRider) {
+                // Retrieve the first name and last name, or provide a fallback
+                const firstName = currentRider.riderName || 'First Name';
+
+                // Display the rider's name
+                document.getElementById('rider-name').textContent = `Welcome, ${firstName}`;
+            } else {
+                // If no rider is logged in, redirect to the login page
+                window.location.href = 'riderLoginForm.html';
+            }
 
             if (!currentRider || !currentRider.DonateFood) {
                 document.getElementById('food-donation-assignments').innerHTML = '<p>No food donations assigned yet.</p>';
@@ -75,11 +88,6 @@
                     // Refresh the page to update the UI
                     location.reload();
                 }
-            });
-
-
-            document.getElementById('back-button').addEventListener('click', function () {
-                window.location.href = 'riderLoginForm.html'; // Assuming the login page is 'index.html'
             });
         });
     </script>
