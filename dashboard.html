@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1>Dashboard</h1>
+    <h2>Welcome <span id="name">User</span></h2>
+    <div class="btn">
+      <button onclick="logout()">Log Out</button>
+      <button onclick="removeacc()">Remove Account</button>
+    </div>
+  </div>
+
+
+  <script>
+    let gettext = localStorage.getItem('username');
+    let dashboard = document.querySelector("#name");
+
+    if (dashboard) {
+      dashboard.innerHTML = gettext;
+    }
+
+    console.log(gettext);
+    console.log(dashboard);
+
+    function logout() {
+      alert("Logout");
+      location.assign("login.html");
+    }
+
+    function removeacc() {
+      localStorage.clear();
+      alert("Account removed");
+      location.assign("Register.html");
+    }
+
+  </script>
+</body>
+
+</html>

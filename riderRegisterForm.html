@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rider Registration</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .container input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .password-container {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-container input {
+            width: calc(100% - 0px);
+            padding-right: 30px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 1.2em;
+            color: black;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Rider Registration</h1>
+
+        <p>Rider Name</p>
+        <input type="text" name="riderName" id="riderName" onkeyup="validateAll()">
+        <span id="validation1"></span>
+
+        <p>Email</p>
+        <input type="email" name="email" id="email" onkeyup="validateAll()">
+        <span id="validation2"></span>
+
+        <p>Password</p>
+        <div class="password-container">
+            <input type="password" name="password" id="password" onkeyup="validateAll()">
+            <span class="toggle-password" onclick="togglePasswordVisibility()">
+                <i id="passwordIcon" class="fa fa-eye"></i>
+            </span>
+        </div>
+        <span id="validation3"></span>
+
+        <p>Phone</p>
+        <input type="tel" name="tel" id="tel" onkeyup="validateAll()">
+        <span id="validation4"></span>
+
+        <p>Vehicle Type</p>
+        <select id="vehicleType" onchange="validateAll()">
+            <option value="" disabled selected>Select your vehicle</option>
+            <option value="Bike">Bike</option>
+            <option value="Car">Car</option>
+            <option value="Van">Van</option>
+        </select>
+        <span id="validation5"></span>
+
+        <p>License Number</p>
+        <input type="text" name="licenseNumber" id="licenseNumber" onkeyup="validateAll()">
+        <span id="validation6"></span><br>
+
+        <button onclick="registerRider()">Register</button>
+    </div>
+    <script>
+        function validateRiderName() {
+            let riderName = document.querySelector("#riderName").value;
+            let regex = /^[a-zA-Z]{3,12}$/;
+            if (riderName === "") {
+                document.getElementById("validation1").innerHTML = "Please fill out this field";
+                document.getElementById("validation1").style.color = "red";
+            } else if (riderName.length < 3) {
+                document.getElementById("validation1").innerHTML = "At least 3 characters are required";
+                document.getElementById("validation1").style.color = "red";
+            } else if (!regex.test(riderName)) {
+                document.getElementById("validation1").innerHTML = "Numbers are not allowed";
+                document.getElementById("validation1").style.color = "red";
+            } else {
+                document.getElementById("validation1").innerHTML = "";
+            }
+        }
+
+        function validateEmail() {
+            let email = document.querySelector("#email").value;
+            let regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (email === "") {
+                document.getElementById("validation2").innerHTML = "Please fill out this field";
+                document.getElementById("validation2").style.color = "red";
+            } else if (!regex.test(email)) {
+                document.getElementById("validation2").innerHTML = "Please enter a valid email address.";
+                document.getElementById("validation2").style.color = "red";
+            } else {
+                document.getElementById("validation2").innerHTML = "";
+            }
+        }
+
+        function validatePassword() {
+            let password = document.querySelector("#password").value;
+            let regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+            if (password === "") {
+                document.getElementById("validation3").innerHTML = "Please fill out this field";
+                document.getElementById("validation3").style.color = "red";
+            } else if (password.length < 6) {
+                document.getElementById("validation3").innerHTML = "Password must be at least 6 characters long.";
+                document.getElementById("validation3").style.color = "red";
+            } else if (!regex.test(password)) {
+                document.getElementById("validation3").innerHTML = "Password must include a special character, a number, an uppercase letter, and a lowercase letter.";
+                document.getElementById("validation3").style.color = "red";
+            } else {
+                document.getElementById("validation3").innerHTML = "";
+            }
+        }
+
+        function validatePhone() {
+            let phone = document.querySelector("#tel").value;
+            let regex = /^\d{11}$/;
+            if (phone === "") {
+                document.getElementById("validation4").innerHTML = "Please fill out this field";
+                document.getElementById("validation4").style.color = "red";
+            } else if (!regex.test(phone)) {
+                document.getElementById("validation4").innerHTML = "Phone number must be exactly 11 digits.";
+                document.getElementById("validation4").style.color = "red";
+            } else {
+                document.getElementById("validation4").innerHTML = "";
+            }
+        }
+
+        function validateVehicleType() {
+            let vehicleType = document.querySelector("#vehicleType").value;
+            if (vehicleType === "") {
+                document.getElementById("validation5").innerHTML = "Please select your vehicle type.";
+                document.getElementById("validation5").style.color = "red";
+            } else {
+                document.getElementById("validation5").innerHTML = "";
+            }
+        }
+
+        function validateLicenseNumber() {
+            let licenseNumber = document.querySelector("#licenseNumber").value;
+            let regex = /^[A-Za-z0-9]{6,12}$/;
+            if (licenseNumber === "") {
+                document.getElementById("validation6").innerHTML = "Please fill out this field";
+                document.getElementById("validation6").style.color = "red";
+            } else if (!regex.test(licenseNumber)) {
+                document.getElementById("validation6").innerHTML = "License number must be 6-12 alphanumeric characters.";
+                document.getElementById("validation6").style.color = "red";
+            } else {
+                document.getElementById("validation6").innerHTML = "";
+            }
+        }
+
+        function validateAll() {
+            validateRiderName();
+            validateEmail();
+            validatePassword();
+            validatePhone();
+            validateVehicleType();
+            validateLicenseNumber();
+        }
+
+        function registerRider() {
+            validateAll();
+
+            if (document.getElementById("validation1").innerHTML === "" &&
+                document.getElementById("validation2").innerHTML === "" &&
+                document.getElementById("validation3").innerHTML === "" &&
+                document.getElementById("validation4").innerHTML === "" &&
+                document.getElementById("validation5").innerHTML === "" &&
+                document.getElementById("validation6").innerHTML === "") {
+
+                let riderName = document.querySelector("#riderName").value;
+                let email = document.querySelector("#email").value;
+                let password = document.querySelector("#password").value;
+                let phone = document.querySelector("#tel").value;
+                let vehicleType = document.querySelector("#vehicleType").value;
+                let licenseNumber = document.querySelector("#licenseNumber").value;
+
+                // Fetch the riders data from localStorage
+                let riders = JSON.parse(localStorage.getItem("riders")) || [];
+
+                // Check if rider name already exists in riders data
+                let existingRider = riders.find(rider => rider.riderName === riderName);
+                if (existingRider) {
+                    document.getElementById("validation1").innerHTML = "Rider name already exists.";
+                    document.getElementById("validation1").style.color = "red";
+                    return;
+                }
+
+                // Add the new rider data
+                riders.push({ riderName, email, password, phone, vehicleType, licenseNumber, profileImage: "", donations: [] });
+                localStorage.setItem("riders", JSON.stringify(riders));
+                localStorage.setItem("justRegistered", "true");
+                location.assign("riderLoginForm.html");
+            }
+        }
+
+        function togglePasswordVisibility() {
+            let passwordField = document.getElementById("password");
+            let passwordIcon = document.getElementById("passwordIcon");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                passwordIcon.classList.remove("fa-eye");
+                passwordIcon.classList.add("fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                passwordIcon.classList.remove("fa-eye-slash");
+                passwordIcon.classList.add("fa-eye");
+            }
+        }
+    </script>
+</body>
+
+</html>

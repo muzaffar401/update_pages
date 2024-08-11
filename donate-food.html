@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Donation Form</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .error {
+            color: red;
+            font-size: 0.875em;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h2 class="mb-4">Food Donation Form</h2>
+        <form id="donationForm" onsubmit="return validateForm()">
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Enter your first name">
+                <span id="firstName-error" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Enter your last name">
+                <span id="lastName-error" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="organization" class="form-label">Organization</label>
+                <input type="text" class="form-control" id="organization" placeholder="Enter your organization's name">
+                <span id="organization-error" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email address">
+                <span id="email-error" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="phone" class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="phone" placeholder="Enter your phone number">
+                <span id="phone-error" class="error"></span>
+            </div>
+            <div class="mb-3">
+                <label for="message" class="form-label">Description of Donation</label>
+                <textarea class="form-control" id="message" rows="4"
+                    placeholder="Please describe what you have to donate"></textarea>
+                <span id="message-error" class="error"></span>
+            </div>
+            <div class="mb-3 form-check">
+                <input type="checkbox" class="form-check-input" id="newsletter">
+                <label class="form-check-label" for="newsletter">Keep up to date with the latest news from Fair
+                    Food</label>
+                <span id="newsletter-error" class="error"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit Donation</button>
+            <a href="donateFoodRecord.html" class="btn btn-danger">View Record</a>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            // Clear previous error messages
+            document.querySelectorAll('.error').forEach(function (span) {
+                span.textContent = '';
+            });
+
+            // Validate first name
+            const firstName = document.getElementById('firstName').value;
+            if (firstName.length < 3 || firstName.length > 12 || /\d/.test(firstName)) {
+                document.getElementById('firstName-error').textContent = 'First name must be between 3 and 12 characters and not contain numbers.';
+                isValid = false;
+            }
+
+            // Validate last name
+            const lastName = document.getElementById('lastName').value;
+            if (lastName.length < 3 || lastName.length > 12 || /\d/.test(lastName)) {
+                document.getElementById('lastName-error').textContent = 'Last name must be between 3 and 12 characters and not contain numbers.';
+                isValid = false;
+            }
+
+            // Validate organization
+            const organization = document.getElementById('organization').value;
+            if (organization.trim() === '' || organization.length < 3 || /\d/.test(organization)) {
+                document.getElementById('organization-error').textContent = 'Organization must be at least 3 characters long and not contain numbers.';
+                isValid = false;
+            }
+
+            // Validate email
+            const email = document.getElementById('email').value;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (!emailPattern.test(email)) {
+                document.getElementById('email-error').textContent = 'Invalid email address.';
+                isValid = false;
+            }
+
+            // Validate phone
+            const phone = document.getElementById('phone').value;
+            if (phone.length !== 11 || !/^\d{11}$/.test(phone)) {
+                document.getElementById('phone-error').textContent = 'Phone number must be 11 digits.';
+                isValid = false;
+            }
+
+            // Validate message
+            const message = document.getElementById('message').value;
+            if (message.trim() === '') {
+                document.getElementById('message-error').textContent = 'Description cannot be empty.';
+                isValid = false;
+            }
+
+            // Validate newsletter checkbox
+            const newsletter = document.getElementById('newsletter').checked;
+            if (!newsletter) {
+                document.getElementById('newsletter-error').textContent = 'You must agree to keep up to date with the latest news from Fair Food.';
+                isValid = false;
+            } else {
+                document.getElementById('newsletter-error').textContent = ''; // Clear error if checked
+            }
+
+            return isValid;
+        }
+
+        function saveFormData() {
+            const formData = {
+                firstName: document.getElementById('firstName').value,
+                lastName: document.getElementById('lastName').value,
+                organization: document.getElementById('organization').value,
+                email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
+                message: document.getElementById('message').value,
+                newsletter: document.getElementById('newsletter').checked
+            };
+
+            let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            currentUser.DonateFood = currentUser.DonateFood || [];
+            const urlParams = new URLSearchParams(window.location.search);
+            const editIndex = urlParams.get('editIndex');
+
+            if (editIndex !== null) {
+                currentUser.DonateFood[editIndex] = formData;
+            } else {
+                currentUser.DonateFood.push(formData);
+            }
+
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+            let users = JSON.parse(localStorage.getItem('users')) || [];
+            let userIndex = users.findIndex(user => user.username === currentUser.username);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+            }
+            localStorage.setItem('users', JSON.stringify(users));
+
+            window.location.href = 'donateFoodRecord.html';
+        }
+
+
+        document.getElementById('donationForm').addEventListener('submit', function (event) {
+            event.preventDefault();
+            if (validateForm()) {
+                saveFormData();
+            }
+        });
+
+        // Pre-fill form if editing
+        document.addEventListener('DOMContentLoaded', function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            const editIndex = urlParams.get('editIndex');
+
+            if (editIndex !== null) {
+                let currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                if (currentUser && currentUser.DonateFood && currentUser.DonateFood[editIndex]) {
+                    const donation = currentUser.DonateFood[editIndex];
+
+                    document.getElementById('firstName').value = donation.firstName;
+                    document.getElementById('lastName').value = donation.lastName;
+                    document.getElementById('organization').value = donation.organization;
+                    document.getElementById('email').value = donation.email;
+                    document.getElementById('phone').value = donation.phone;
+                    document.getElementById('message').value = donation.message;
+                    document.getElementById('newsletter').checked = donation.newsletter;
+                }
+            }
+        });
+
+
+        // Trigger validation on keyup and checkbox change
+        document.querySelectorAll('input, textarea').forEach(field => {
+            field.addEventListener('keyup', validateForm);
+        });
+
+        document.getElementById('newsletter').addEventListener('change', function () {
+            validateForm(); // Trigger validation when the checkbox is checked or unchecked
+        });
+    </script>
+
+</body>
+
+</html>

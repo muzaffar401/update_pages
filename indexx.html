@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+        integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+</head>
+
+<style>
+    .offcanvas-body {
+        background-color: rgb(224, 224, 224);
+    }
+
+    #form {
+        background-color: white;
+        border-radius: 5px;
+    }
+
+    #offcanvasRight {
+        width: 350px !important;
+    }
+
+    .btn-close {
+        float: right !important;
+    }
+
+    .navbar {
+        height: 120px;
+    }
+
+    #logo {
+        margin-left: 10px !important;
+    }
+
+    #donate {
+        font-size: 20px;
+        border-radius: 30px;
+        padding: 7px 20px;
+        font-weight: bold;
+    }
+
+    nav {
+        background-color: rgb(238, 238, 238);
+    }
+
+    #menu {
+        font-size: 25px;
+    }
+
+    body {
+        background-color: rgb(255, 249, 236);
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    .hero-section {
+        position: relative;
+        text-align: center;
+    }
+
+
+
+    .register-button {
+        position: absolute;
+        top: 74%;
+        /* Adjust this value to place the button vertically */
+        left: 43%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+    }
+
+    .button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 13px 28px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 25px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 30px;
+        letter-spacing: 0.4rem;
+    }
+
+
+    #card1 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #card1 img:hover {
+        transform: scale(0.9);
+    }
+
+    #card1:hover img {
+        background-color: rgb(181, 51, 50);
+    }
+
+    #card1:hover {
+        background-color: rgb(181, 51, 50);
+        color: white;
+        cursor: pointer;
+    }
+
+    #card2 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #card2 img:hover {
+        transform: scale(0.9);
+    }
+
+    #card2:hover img {
+        background-color: rgb(134, 41, 61);
+    }
+
+    #card2:hover {
+        background-color: rgb(134, 41, 61);
+        color: white;
+        cursor: pointer;
+    }
+
+    #card3 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #card3 img:hover {
+        transform: scale(0.9);
+    }
+
+    #card3:hover img {
+        background-color: rgb(60, 94, 53);
+    }
+
+    #card3:hover {
+        background-color: rgb(60, 94, 53);
+        color: white;
+        cursor: pointer;
+    }
+
+
+    #cards1 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #cards1 img:hover {
+        transform: scale(0.9);
+    }
+
+    #cards1:hover img {
+        background-color: rgb(134, 41, 61);
+    }
+
+    #cards1:hover {
+        background-color: rgb(134, 41, 61);
+        color: white;
+        cursor: pointer;
+    }
+
+    #cards2 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #cards2 img:hover {
+        transform: scale(0.9);
+    }
+
+    #cards2:hover img {
+        background-color: rgb(60, 94, 53);
+    }
+
+    #cards2:hover {
+        background-color: rgb(60, 94, 53);
+        color: white;
+        cursor: pointer;
+    }
+
+    #cards3 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #cards3 img:hover {
+        transform: scale(0.9);
+    }
+
+    #cards3:hover img {
+        background-color: rgb(148, 73, 0);
+    }
+
+    #cards3:hover {
+        background-color: rgb(148, 73, 0);
+        color: white;
+        cursor: pointer;
+    }
+
+    #cards4 {
+        /* background-color: black; */
+        border-radius: 20px;
+        padding: 20px;
+        transition: .5s;
+    }
+
+    #cards4 img:hover {
+        transform: scale(0.9);
+    }
+
+    #cards4:hover img {
+        background-color: rgb(181, 51, 50);
+    }
+
+    #cards4:hover {
+        background-color: rgb(181, 51, 50);
+        color: white;
+        cursor: pointer;
+    }
+
+    #blog .card {
+        border-radius: 20px;
+        cursor: pointer;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+    #welcome {
+        font-size: 60px;
+        font-weight: bold;
+        letter-spacing: 8px;
+        font-family: poppins;
+    }
+
+    #welcome5{
+        font-size: 60px;
+        font-weight: bold;
+        letter-spacing: 0px;
+        font-family: poppins;
+    }
+
+    #welcome1 {
+        font-size: 60px;
+        font-weight: bold;
+        letter-spacing: 0px;
+        font-family: poppins;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+    #p {
+        font-family: roboto;
+        text-align: justify;
+    }
+
+    #p2 {
+        font-family: roboto;
+        text-align: justify;
+        opacity: 0.7;
+    }
+
+    #p1 {
+        font-family: roboto;
+        text-align: justify;
+
+    }
+    #p5 {
+        font-family: roboto;
+        letter-spacing: 3px;
+
+    }
+
+    #btn {
+        display: block;
+        margin: 0 auto;
+        width: 150px;
+        padding: 10px 15px;
+        border-radius: 20px;
+    }
+
+    #map {
+        height: 600px;
+        width: 100%;
+    }
+    
+    #form #input{
+        height: 60px;
+    }
+</style>
+
+<body>
+
+    <nav class="navbar navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand text-white" href="#"><img src="logo.png" id="logo" height="60" alt="">
+
+            </a>
+            <div>
+                <button class="btn btn-success me-3" id="donate" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasRight1" aria-controls="offcanvasRight1">Donate Now</button>
+                <button class="btn" id="menu" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                    aria-controls="offcanvasRight"><i class="fa-solid fa-bars-staggered"></i></button>
+            </div>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight1"
+                aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-header">
+                    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    ...
+                </div>
+            </div>
+
+            <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight"
+                aria-labelledby="offcanvasRightLabel">
+                <div class="offcanvas-body">
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                    <div class="mt-5">
+                        <a class="nav-link" href="#">HOME</a>
+                        <a class="nav-link" href="#">How We Help</a>
+                        <a class="nav-link" href="#">Get Involved</a>
+                        <a class="nav-link" href="#">Events</a>
+                        <a class="nav-link" href="#">Media</a>
+                        <a class="nav-link" href="#">Resource Center</a>
+                        <a class="nav-link" href="#">Contact & FAQ</a>
+                        <a class="nav-link mb-5" href="#">IDEA and Anti-Racism Commitments</a>
+
+                        <form class="p-3" id="form">
+                            <h3 class="text-center my-5">Join our newsletter</h3>
+                            <input class="form-control my-3" type="text" name="firstName" placeholder="First Name"
+                                required>
+                            <input class="form-control my-3" type="text" name="lastName" placeholder="Last Name"
+                                required>
+                            <input class="form-control my-3" type="email" name="email" placeholder="Email" required>
+                            <div class="form-check my-4">
+                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    I agree to receive marketing messages via email.
+                                </label>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row">
+            <div class="col-lg-6" data-aos="fade-right">
+                <img src="apple.png" class="img-fluid" style="position: absolute; opacity: 0.3;" alt="">
+                <h1 class="text-center mt-5" id="welcome">WELCOME</h1>
+
+                <p class="my-5 fs-5" id="p">
+                    The Leftovers Foundation aims to reduce food waste and prevent greenhouse gas emissions by rescuing
+                    surplus
+                    food from restaurants, grocery stores, and other businesses, and redistributing it to those in need.
+                    This
+                    initiative not only helps to alleviate hunger and food insecurity in our communities but also
+                    mitigates
+                    environmental impact by decreasing the methane emissions that result from food decomposition in
+                    landfills.
+                    By forming partnerships with local businesses and community organizations, we work to ensure that
+                    good food
+                    is not wasted but instead reaches those who need it most, fostering a more sustainable and equitable
+                    food
+                    system.
+                </p>
+            </div>
+            <div class="col-lg-6" data-aos="fade-left">
+                <img src="img1.png" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <hr style="color: #4CAF50;">
+
+        <div class="row mt-5">
+
+            <div class="col-lg-6 mt-5" data-aos="fade-right">
+                <h1 class="text-center" id="welcome1">Why We're Doing This</h1>
+                <p id="p1" class="fs-5 mt-5">In Pakistan, it is estimated that our food system wastes approximately 20.2
+                    million tonnes of edible
+                    food per year. Following similar patterns to Canada, only around 4%, or approximately 0.81 million
+                    tonnes of that food, is rescued and redirected. Some of the remaining 19.39 million tonnes of food
+                    is used for animal feed, biofuels, or compost, but the majority goes to landfills.</p>
+            </div>
+            <div class="col-lg-5 ms-5" data-aos="fade-left">
+                <img src="Think-PNG-Download-Image.webp" class="img-fluid" alt="">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <hr style="color: #4CAF50;">
+
+        <h1 class="text-center  my-5" id="welcome" data-aos="fade-up">HOW WE HELP?</h1>
+        <p class="text-center w-50 m-auto my-5 fs-4" id="p" data-aos="fade-up">We believe one of the best ways to reduce
+            food waste is to
+            get the food
+            to community organizations working with vulnerable populations, ensuring that it can be used where food is
+            most needed.</p>
+        <div class="row" data-aos="fade-up">
+            <div class="col-lg-4">
+                <div class="card" id="card1">
+                    <img src="leftovers-reverse.png" style="border: none;" id="card1" class="img-thumbnail"
+                        alt="About Leftovers">
+                    <div class="card-body">
+                        <h5 class="card-title">About Leftovers</h5>
+                        <p class="card-text">Reduce food waste and increase access.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" id="card2">
+                    <img src="Rescuefood.png" id="card2" style="border: none;" class="img-thumbnail" alt="Rescue Food">
+                    <div class="card-body">
+                        <h5 class="card-title">Rescue Food</h5>
+                        <p class="card-text">Rescue food and deliver it to service agencies.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card" id="card3">
+                    <img src="Homeharvest.png" style="border: none;" id="card3" class="img-thumbnail"
+                        alt="Home Harvest">
+                    <div class="card-body">
+                        <h5 class="card-title">Home Harvest</h5>
+                        <p class="card-text">Harvest food from community backyards.</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <hr style="color: #4CAF50; margin-top: 100px;">
+
+        <h1 class="text-center my-5" id="welcome" data-aos="fade-up">Get Involved</h1>
+        <p class="text-center w-50 m-auto my-5 fs-4" id="p" data-aos="fade-up">Whether you want to volunteer, donate
+            food, donate
+            financially, or receive food, there is a program for you.</p>
+
+        <div class="row justify-content-between gx-3" data-aos="fade-up">
+            <div class="col-lg-3 d-flex">
+                <div class="card h-100" id="cards1">
+                    <img src="sixth_img.png" style="border: none;" id="cards1" class="img-thumbnail"
+                        alt="About Leftovers">
+                    <div class="card-body">
+                        <h5 class="card-title">Donate Food</h5>
+                        <p class="card-text">Help protect our environment and increase food access</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 d-flex">
+                <div class="card h-100" id="cards2">
+                    <img src="seventh_img.png" id="cards2" style="border: none;" class="img-thumbnail"
+                        alt="Rescue Food">
+                    <div class="card-body">
+                        <h5 class="card-title">Service Agencies</h5>
+                        <p class="card-text">Get rescued food and focus on your clients</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 d-flex">
+                <div class="card h-100" id="cards3">
+                    <img src="eighth_img.png" style="border: none;" id="cards3" class="img-thumbnail"
+                        alt="Home Harvest">
+                    <div class="card-body">
+                        <h5 class="card-title">Volunteer</h5>
+                        <p class="card-text">Use our app to rescue, harvest, and deliver food to those in need</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 d-flex">
+                <div class="card h-100" id="cards4">
+                    <img src="nineth_img.png" style="border: none;" id="cards4" class="img-thumbnail"
+                        alt="Home Harvest">
+                    <div class="card-body">
+                        <h5 class="card-title">Support Us</h5>
+                        <p class="card-text">Make an impact as a donor</p>
+                        <a href="#" class="btn btn-primary">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-5">
+        <hr style="color: #4CAF50; margin-top: 100px;">
+
+        <h1 class="text-center  my-5" id="welcome" data-aos="fade-up">Latest Blog Posts</h1>
+
+        <div class="row" id="blog" data-aos="fade-up">
+            <div class="col-lg-4">
+                <div class="card p-3 h-100">
+                    <img src="Food-Waste-Action-Week-2024-Blog-Post-768x499.jpg" style="border: none;"
+                        class="img-thumbnail" alt="About Leftovers">
+                    <div class="card-body">
+                        <h5 class="card-title">Reducing Emissions: Compost Winnipeg</h5>
+                        <p class="card-text">Compost Winnipeg is a social enterprise by Green Action Centre. They serve
+                            both residential and …</p>
+                        <p><i class="fa-solid fa-calendar-days"></i> March 4, 2024</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card p-3 h-100">
+                    <img src="Happy-New-Year-1024x666.jpg" style="border: none;" class="img-thumbnail"
+                        alt="Rescue Food">
+                    <div class="card-body">
+                        <h5 class="card-title">Happy New Year!</h5>
+                        <p class="card-text">Dearest Community, We are welcoming the new year and with that, the entire
+                            Leftovers Foundation …</p>
+                        <p><i class="fa-solid fa-calendar-days"></i> January 19, 2024</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card p-3 h-100">
+                    <img src="Harnessing-Technology-for-Food-Rescue-A-Conversation-with-the-Leftovers-Foundation-1024x666.jpg"
+                        style="border: none;" class="img-thumbnail" alt="Home Harvest">
+                    <div class="card-body">
+                        <h5 class="card-title">Harnessing Technology for Food Rescue: A Conversation with the Leftovers
+                            Foundation</h5>
+                        <p class="card-text">Guest post by Kristy Wolfe, Executive Director, Wolfe Pack Warriors
+                            Foundation In the latest episode of …</p>
+                        <p><i class="fa-solid fa-calendar-days"></i> January 1, 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="#" class="btn btn-danger my-5" data-aos="fade-up" id="btn">Read More</a>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <hr style="color: #4CAF50; margin-top: 100px;">
+        <h1 class="text-center mt-5" id="welcome">Upcoming Events</h1>
+        <p class="fs-3 fw-bold mt-5" id="p">There is no Event</p>
+        <a href="#" class="btn btn-danger my-5" id="btn">All Events</a>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+        <hr style="color: #4CAF50; margin-top: 100px;">
+        <h1 class="text-center mt-5" id="welcome">Where We Are</h1>
+        <p class="fs-5 fw-bold my-5 text-center" id="p2">Support food rescue in your community!</p>
+        <div id="map"></div>
+    </div>
+
+
+    <div class="container">
+        <hr style="color: #4CAF50; margin-top: 100px;">
+        <div class="row my-5">
+            <div class="col-lg-6 mt-5 me-4" data-aos="fade-right">
+
+                <h1 class=" my-5" id="welcome5">Join Our Newsletter</h1>
+                <p class="my-5 fs-5" id="p">Want to know more? Sign up to
+                    receive our monthly newsletter and other updates, and see what’s happening at Leftovers and in the
+                    world of food rescue! </p>
+            </div>
+            <div class="col-lg-5 ms-5" data-aos="fade-left">
+                <form class="p-5" id="form">
+                    <hr style="color: #4CAF50; width: 200px; margin: auto;">
+                    <h3 class="text-center mb-5 mt-3" id="p5">Join our newsletter</h3>
+                    <input class="form-control my-3" id="input" type="text" name="firstName" placeholder="First Name"
+                        required>
+                    <input class="form-control my-3" id="input" type="text" name="lastName" placeholder="Last Name"
+                        required>
+                    <input class="form-control my-3" id="input" type="email" name="email" placeholder="Email" required>
+                    <div class="form-check my-4">
+                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            I agree to receive marketing messages via email.
+                        </label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the map
+        var map = L.map('map').setView([24.8607, 67.0011], 13); // Centered on Karachi with a higher zoom
+
+        // Add a tile layer to the map with CartoDB Positron tiles
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+            subdomains: 'abcd',
+            maxZoom: 12
+        }).addTo(map);
+
+        // Add markers to the map with NGO locations
+        var locations = [
+            { lat: 24.8736, lng: 67.0282, name: "Edhi Foundation" },
+            { lat: 24.8602, lng: 67.0011, name: "Chhipa Welfare Association" },
+            { lat: 24.8565, lng: 67.0306, name: "Saylani Welfare International Trust" },
+            { lat: 24.9177, lng: 67.0971, name: "Aman Foundation" },
+            { lat: 24.8600, lng: 67.0100, name: "JDC Foundation" }
+        ];
+
+        locations.forEach(function (location) {
+            L.marker([location.lat, location.lng])
+                .addTo(map)
+                .bindPopup(location.name);
+        });
+    </script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

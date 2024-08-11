@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Rider Dashboard</title>
+</head>
+
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center my-5 text-primary">Rider Dashboard</h1>
+        <div id="food-donation-assignments" class="col-lg-8 offset-lg-2"></div>
+        <button id="back-button" class="btn btn-primary mb-3">Back to Login</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Retrieve the logged-in rider's data from sessionStorage
+            let currentRider = JSON.parse(sessionStorage.getItem('currentRider'));
+
+            if (!currentRider || !currentRider.DonateFood) {
+                document.getElementById('food-donation-assignments').innerHTML = '<p>No food donations assigned yet.</p>';
+                return;
+            }
+
+            const foodDonationAssignments = document.getElementById('food-donation-assignments');
+
+            const donationCard = document.createElement('div');
+            donationCard.classList.add('card', 'mb-3');
+            donationCard.innerHTML = `
+                <div class="card-body">
+                    <h5 class="card-title">Food Donation Assignment</h5>
+                    <p class="card-text"><strong>Name:</strong> ${currentRider.DonateFood.firstName} ${currentRider.DonateFood.lastName}</p>
+                    <p class="card-text"><strong>Email:</strong> ${currentRider.DonateFood.email}</p>
+                    <p class="card-text"><strong>Phone:</strong> ${currentRider.DonateFood.phone}</p>
+                    <p class="card-text"><strong>Message:</strong> ${currentRider.DonateFood.message}</p>
+                    <p class="card-text"><strong>Organization:</strong> ${currentRider.DonateFood.organization}</p>
+                    <p class="card-text"><strong>Newsletter:</strong> ${currentRider.DonateFood.newsletter ? 'Yes' : 'No'}</p>
+                    <button class="btn btn-success btn-sm done-btn">Done</button>
+                </div>
+            `;
+            foodDonationAssignments.appendChild(donationCard);
+
+            document.querySelector('.done-btn').addEventListener('click', function () {
+                if (confirm("Are you sure you want to mark this donation as done?")) {
+                    // Clear the donation data and mark the rider as available
+                    const donation = currentRider.DonateFood;
+                    currentRider.DonateFood = null;
+                    currentRider.available = true;
+
+                    // Update the riders array in localStorage
+                    let riders = JSON.parse(localStorage.getItem('riders')) || [];
+                    const riderIndex = riders.findIndex(rider => rider.email === currentRider.email);
+                    if (riderIndex !== -1) {
+                        riders[riderIndex] = currentRider;
+                        localStorage.setItem('riders', JSON.stringify(riders));
+                    }
+
+                    // Update the current rider data in sessionStorage
+                    sessionStorage.setItem('currentRider', JSON.stringify(currentRider));
+
+                    // Remove donation from user's data
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    const userIndex = users.findIndex(user => user.username === donation.username);
+                    if (userIndex !== -1 && users[userIndex].DonateFood) {
+                        const donationIndex = users[userIndex].DonateFood.findIndex(d => d.message === donation.message);
+                        if (donationIndex !== -1) {
+                            users[userIndex].DonateFood.splice(donationIndex, 1);
+                            localStorage.setItem('users', JSON.stringify(users));
+                        }
+                    }
+
+                    // Refresh the page to update the UI
+                    location.reload();
+                }
+            });
+
+
+            document.getElementById('back-button').addEventListener('click', function () {
+                window.location.href = 'riderLoginForm.html'; // Assuming the login page is 'index.html'
+            });
+        });
+    </script>
+</body>
+
+</html>

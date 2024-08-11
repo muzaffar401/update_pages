@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Donation Display</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="container mt-5">
+        <h1>Donation Details</h1>
+        <div id="donation-list"></div>
+        <a href="donate-food.html" class="btn btn-success mt-3">Back to Form</a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const donationList = document.getElementById('donation-list');
+            const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+            const donations = currentUser.DonateFood || [];
+
+            if (donations.length === 0) {
+                donationList.innerHTML = '<p>No donations found.</p>';
+            } else {
+                donations.forEach((donation, index) => {
+                    const donationCard = document.createElement('div');
+                    donationCard.classList.add('card', 'mb-3');
+                    donationCard.innerHTML = `
+                <div class="card-body">
+                    <p class="card-text"><strong>Name:</strong> ${donation.firstName} ${donation.lastName}</p>
+                    <p class="card-text"><strong>Email:</strong> ${donation.email}</p>
+                    <p class="card-text"><strong>Phone:</strong> ${donation.phone}</p>
+                    <p class="card-text"><strong>Message:</strong> ${donation.message}</p>
+                    ${donation.companyName ? `<p class="card-text"><strong>Company Name:</strong> ${donation.companyName}</p>` : ''}
+                    ${donation.role ? `<p class="card-text"><strong>Role:</strong> ${donation.role}</p>` : ''}
+                    <p class="card-text"><strong>Newsletter:</strong> ${donation.newsletter ? 'Yes' : 'No'}</p>
+                    ${donation.companyName ? `<p class="card-text"><strong>Receipt:</strong> ${donation.receipt ? 'Yes' : 'No'}</p>` : ''}
+                    <button class="btn btn-warning btn-sm edit-btn" data-index="${index}">Edit</button>
+                    <button class="btn btn-danger btn-sm delete-btn" data-index="${index}">Delete</button>
+                </div>
+            `;
+                    donationList.appendChild(donationCard);
+                });
+
+                // Add event listeners for edit and delete buttons
+                document.querySelectorAll('.edit-btn').forEach(button => {
+                    button.addEventListener('click', editDonation);
+                });
+
+                document.querySelectorAll('.delete-btn').forEach(button => {
+                    button.addEventListener('click', deleteDonation);
+                });
+            }
+        });
+
+
+        function editDonation(event) {
+            const index = event.target.dataset.index;
+            window.location.href = `donate-food.html?editIndex=${index}`;
+        }
+
+        function deleteDonation(event) {
+            const index = event.target.dataset.index;
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const currentUser = JSON.parse(localStorage.getItem('currentUser')) || {};
+            const donations = currentUser.DonateFood || [];
+
+            if (confirm("Are you sure you want to delete this donation?")) {
+                donations.splice(index, 1);
+                currentUser.DonateFood = donations;
+                const userIndex = users.findIndex(user => user.username === currentUser.username);
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                location.reload();
+            }
+        }
+
+
+    </script>
+
+</body>
+
+</html>
